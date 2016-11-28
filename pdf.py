@@ -9,9 +9,9 @@ from reportlab.lib.units import cm
 point = 1
 
 # Test vars
-SXOLI = "ΤΜΗΜΑ ΗΛΕΚΤΡΟΛΟΓΩΝ ΜΗΧΑΝΙΚΩΝ"
-TMHMA = "ΤΜΗΜΑ ΗΛΕΚΤΡΟΛΟΓΩΝ ΜΗΧΑΝΙΚΩΝ"
-DATE = "12 Ιουνιου 2039"
+SXOLI = "ΣΧΟΛΗ ΘΕΤΙΚΩΝ ΕΠΙΣΤΗΜΩΝ ΚΑΙ ΚΑΡΓΙΕΡΙΣΤΩΝ ΚΑΙ ΠΑΤΑΤΕΣ"
+TMHMA = "ΒΙΟΛΟΓΙΚΟ"
+DATE = "31 Μαρτιου 2016"
 UNIV = "ΑΡΙΣΤΟΤΕΛΕΙΟ ΠΑΝΕΠΗΣΤΙΜΙΟ ΘΕΣΣΑΛΟΝΙΚΗΣ"
 
 # initialize array for spliting
@@ -108,7 +108,7 @@ def make_pdf_file(output_filename):
 
     c.setFont("Helvetica", 12 * point)
     #Date dimentions
-    c.drawCentredString(19.9 * cm, 5.86 * cm, "5 Ιουνιου 2007")
+    c.drawCentredString(19.9 * cm, 5.86 * cm, DATE)
     #Shol
     c.rotate(90)
     c.setFont("Helvetica", 11 * point)
