@@ -1,38 +1,46 @@
+# General imports
 from __future__ import print_function
-#from sys import argv
 from sys import *
 
+# ReportLab imports
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
-from reportlab.lib.utils import simpleSplit
 
 point = 1
-inch = 72
 
+# Test vars
 SXOLI = "ΤΜΗΜΑ ΗΛΕΚΤΡΟΛΟΓΩΝ ΜΗΧΑΝΙΚΩΝ"
 TMHMA = "ΤΜΗΜΑ ΗΛΕΚΤΡΟΛΟΓΩΝ ΜΗΧΑΝΙΚΩΝ"
 DATE = "12 Ιουνιου 2039"
 UNIV = "ΑΡΙΣΤΟΤΕΛΕΙΟ ΠΑΝΕΠΗΣΤΙΜΙΟ ΘΕΣΣΑΛΟΝΙΚΗΣ"
 
+# initialize array for spliting
 new_sxoli = ["", ""]
 
+# set font size
 if (len(SXOLI) > 50):
     sxoli_font = 14
 else:
     sxoli_font = 15
 
 if (len(SXOLI) > 28):
+    # splits in spaces
     tmp = SXOLI.split(" ")
     i = 0
+    # creates first array entry
     while ( len(new_sxoli[0]) < 26):
         new_sxoli[0] = new_sxoli[0] + " " + tmp[i]
         i = i + 1
+    # creates second array entry
     while(i < len(tmp)):
         new_sxoli[1] = new_sxoli[1] + " " + tmp[i]
         i = i + 1
 else:
+    # else just copy what you have to first array entry
     new_sxoli[0] = SXOLI
 
+# same for the two next (probably should be a function
+# if it's gonna be used more than once...)
 new_tmhma = ["", ""]
 
 if (len(TMHMA) > 50):
@@ -108,6 +116,7 @@ def make_pdf_file(output_filename):
     c.showPage()
     c.save()
 
-if __name__ == "__main__":
-    make_pdf_file("test.pdf")
+# call function
+make_pdf_file("test.pdf")
+
 print ("Wrote", "test")
