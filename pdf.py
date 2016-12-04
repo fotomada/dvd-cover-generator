@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 # General imports
 from __future__ import print_function
 from sys import *
@@ -5,6 +8,10 @@ from sys import *
 # ReportLab imports
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+pdfmetrics.registerFont(TTFont('DejaVuSans', 'DejaVuSans.ttf'))
 
 point = 1
 
@@ -88,33 +95,34 @@ def make_pdf_file(output_filename):
 
     #University dimentions
     univ_font = 12
-    c.setFont("Helvetica", univ_font * point)
+    c.setFont("DejaVuSans", univ_font * point)
     univ_y = 12.66
     for line in new_univ:
         c.drawCentredString(19.9 * cm, univ_y * cm, line)
         univ_y = (univ_y * cm - univ_font - 2) / cm
 
-    c.setFont("Helvetica", sxoli_font * point)
+    c.setFont("DejaVuSans", sxoli_font * point)
     sxoli_y = 10.38
     for line in new_sxoli:
         c.drawCentredString(19.9 * cm, sxoli_y * cm, line)
         sxoli_y = (sxoli_y * cm - sxoli_font - 2) / cm
 
-    c.setFont("Helvetica", tmhma_font * point)
+    c.setFont("DejaVuSans", tmhma_font * point)
     tmhma_y = 7.38
     for line in new_tmhma:
         c.drawCentredString(19.9 * cm, tmhma_y * cm, line)
         tmhma_y = (tmhma_y * cm - tmhma_font - 2) / cm
 
-    c.setFont("Helvetica", 12 * point)
+    c.setFont("DejaVuSans", 12 * point)
     #Date dimentions
     c.drawCentredString(19.9 * cm, 5.86 * cm, DATE)
     #Shol
     c.rotate(90)
-    c.setFont("Helvetica", 11 * point)
+    c.setFont("DejaVuSans", 11 * point)
     c.drawCentredString(9.1 * cm, -13.65 * cm, side)
     c.showPage()
     c.save()
+
 
 # call function
 make_pdf_file("test.pdf")
