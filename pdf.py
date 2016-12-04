@@ -75,11 +75,8 @@ def make_pdf_file(output_filename):
   c.setStrokeColorRGB(0,0,0)
   c.setFillColorRGB(0,0,0)
 
-  univ_font = 12
-  draw_asset(font, univ_font, new_univ, univ_y, c)
-
+  draw_asset(font, 12, new_univ, univ_y, c)
   draw_asset(font, sxoli_font, new_sxoli, sxoli_y, c)
-
   draw_asset(font, tmhma_font, new_tmhma, tmhma_y, c)
 
   # Draw date
