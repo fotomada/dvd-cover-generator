@@ -83,12 +83,12 @@ def make_pdf_file(output_filename):
   draw_asset(font, tmhma_font, new_tmhma, tmhma_y, c)
 
   # Draw date
-  c.setFont("Helvetica", 12 * point)
+  c.setFont(font, 12 * point)
   c.drawCentredString(middle_x * cm, date_y * cm, DATE)
 
   # Draw side
   c.rotate(90)
-  c.setFont("Helvetica", 11 * point)
+  c.setFont(font, 11 * point)
   c.drawCentredString(9.1 * cm, -13.65 * cm, side)
 
   # finalize
