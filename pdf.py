@@ -6,7 +6,18 @@ from sys import *
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 
+#############
+# VARIABLES #
+#############
+
 point = 1
+
+# coordinates
+tmhma_y = 7.38
+sxoli_y = 10.38
+univ_y = 12.66
+date_y = 5.86
+middle_x = 20
 
 # Test vars
 SXOLI = "ΣΧΟΛΗ ΘΕΤΙΚΩΝ ΕΠΙΣΤΗΜΩΝ ΚΑΙ ΚΑΡΓΙΕΡΙΣΤΩΝ ΚΑΙ ΠΑΤΑΤΕΣ"
@@ -14,109 +25,92 @@ TMHMA = "ΒΙΟΛΟΓΙΚΟ"
 DATE = "31 Μαρτιου 2016"
 UNIV = "ΑΡΙΣΤΟΤΕΛΕΙΟ ΠΑΝΕΠΗΣΤΙΜΙΟ ΘΕΣΣΑΛΟΝΙΚΗΣ"
 
-# initialize array for spliting
-new_sxoli = ["", ""]
+####################
+# DEFINE FUNCTIONS #
+####################
 
-# set font size
-if (len(SXOLI) > 50):
-    sxoli_font = 14
-else:
-    sxoli_font = 15
+# split the string to 2 lines if too big (also the take care of the font)
+def reshape(word):
+  # set font size
+  if (len(word) > 50):
+    font = 14
+  else:
+    font = 15
 
-if (len(SXOLI) > 28):
+  new_arr = ["", ""]
+  
+  if (len(word) > 28):
     # splits in spaces
-    tmp = SXOLI.split(" ")
+    tmp = word.split(" ")
     i = 0
     # creates first array entry
-    while ( len(new_sxoli[0]) < 26):
-        new_sxoli[0] = new_sxoli[0] + " " + tmp[i]
-        i = i + 1
+    new_arr[0] = new_arr[0] + tmp[i]
+    i = i + 1
+    while ( len(new_arr[0]) < 26):
+      new_arr[0] = new_arr[0] + " " + tmp[i]
+      i = i + 1
     # creates second array entry
+    if (i < len(tmp)):
+      new_arr[1] = new_arr[1] + tmp[i]
+      i = i + 1
     while(i < len(tmp)):
-        new_sxoli[1] = new_sxoli[1] + " " + tmp[i]
-        i = i + 1
-else:
+      new_arr[1] = new_arr[1] + " " + tmp[i]
+      i = i + 1
+  else:
     # else just copy what you have to first array entry
-    new_sxoli[0] = SXOLI
+    new_arr[0] = word
 
-# same for the two next (probably should be a function
-# if it's gonna be used more than once...)
-new_tmhma = ["", ""]
+  return new_arr, font
 
-if (len(TMHMA) > 50):
-    tmhma_font = 14
-else:
-    tmhma_font = 15
+def draw_asset(font, font_size, asset, asset_y, canv):
+  canv.setFont(font, font_size * point)
+  for line in asset:
+    canv.drawCentredString(20 * cm, asset_y * cm, line)
+    asset_y = (asset_y * cm - font_size - 2) / cm
 
-if (len(TMHMA) > 28):
-    tmp = TMHMA.split(" ")
-    i = 0
-    while ( len(new_tmhma[0]) < 26):
-        new_tmhma[0] = new_tmhma[0] + " " + tmp[i]
-        i = i + 1
-    while(i < len(tmp)):
-        new_tmhma[1] = new_tmhma[1] + " " + tmp[i]
-        i = i + 1
-else:
-    new_tmhma[0] = TMHMA
+def make_pdf_file(output_filename):
+  title = output_filename
+  font = "Helvetica"
+  c = canvas.Canvas(output_filename, pagesize=(26.55 * cm, 18.2 * cm))
+  c.setStrokeColorRGB(0,0,0)
+  c.setFillColorRGB(0,0,0)
 
-new_univ = ["", ""]
+  univ_font = 12
+  draw_asset(font, univ_font, new_univ, univ_y, c)
 
-if (len(UNIV) > 20):
-    tmp = UNIV.split(" ")
-    i = 0
-    while ( len(new_univ[0]) < 26):
-        new_univ[0] = new_univ[0] + " " + tmp[i]
-        i = i + 1
-    while(i < len(tmp)):
-        new_univ[1] = new_univ[1] + " " + tmp[i]
-        i = i + 1
-else:
-    new_univ[0] = UNIV
+  draw_asset(font, sxoli_font, new_sxoli, sxoli_y, c)
 
+  draw_asset(font, tmhma_font, new_tmhma, tmhma_y, c)
+
+  # Draw date
+  c.setFont("Helvetica", 12 * point)
+  c.drawCentredString(middle_x * cm, date_y * cm, DATE)
+
+  # Draw side
+  c.rotate(90)
+  c.setFont("Helvetica", 11 * point)
+  c.drawCentredString(9.1 * cm, -13.65 * cm, side)
+
+  # finalize
+  c.showPage()
+  c.save()
+
+
+########
+# MAIN #
+########
+
+new_sxoli, sxoli_font = reshape(SXOLI)
+new_tmhma, tmhma_font = reshape(TMHMA)
+new_univ, scrap = reshape(UNIV)
+
+# build the side of the cover
 temp = " "
 side = DATE + temp + TMHMA
-while (len(side) < 70):
-    temp = temp + " "
-    side = DATE + temp + TMHMA
-        
-def make_pdf_file(output_filename):
-    title = output_filename
-    c = canvas.Canvas(output_filename, pagesize=(26.55 * cm, 18.2 * cm))
-    c.setStrokeColorRGB(0,0,0)
-    c.setFillColorRGB(0,0,0)
+while (len(side) < 80):
+  temp = temp + " "
+  side = DATE + temp + TMHMA
 
-    #University dimentions
-    univ_font = 12
-    c.setFont("Helvetica", univ_font * point)
-    univ_y = 12.66
-    for line in new_univ:
-        c.drawCentredString(19.9 * cm, univ_y * cm, line)
-        univ_y = (univ_y * cm - univ_font - 2) / cm
-
-    c.setFont("Helvetica", sxoli_font * point)
-    sxoli_y = 10.38
-    for line in new_sxoli:
-        c.drawCentredString(19.9 * cm, sxoli_y * cm, line)
-        sxoli_y = (sxoli_y * cm - sxoli_font - 2) / cm
-
-    c.setFont("Helvetica", tmhma_font * point)
-    tmhma_y = 7.38
-    for line in new_tmhma:
-        c.drawCentredString(19.9 * cm, tmhma_y * cm, line)
-        tmhma_y = (tmhma_y * cm - tmhma_font - 2) / cm
-
-    c.setFont("Helvetica", 12 * point)
-    #Date dimentions
-    c.drawCentredString(19.9 * cm, 5.86 * cm, DATE)
-    #Shol
-    c.rotate(90)
-    c.setFont("Helvetica", 11 * point)
-    c.drawCentredString(9.1 * cm, -13.65 * cm, side)
-    c.showPage()
-    c.save()
-
-# call function
 make_pdf_file("test.pdf")
 
 print ("Wrote", "test")
