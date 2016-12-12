@@ -1,3 +1,6 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-  
+
 # General imports
 from __future__ import print_function
 from sys import *
@@ -5,7 +8,10 @@ from sys import *
 # ReportLab imports
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
+pdfmetrics.registerFont(TTFont('DejaVuSans', 'DejaVuSans.ttf'))
 #############
 # VARIABLES #
 #############
@@ -70,7 +76,7 @@ def draw_asset(font, font_size, asset, asset_y, canv):
 
 def make_pdf_file(output_filename):
   title = output_filename
-  font = "Helvetica"
+  font = "DejaVuSans"
   c = canvas.Canvas(output_filename, pagesize=(26.55 * cm, 18.2 * cm))
   c.setStrokeColorRGB(0,0,0)
   c.setFillColorRGB(0,0,0)
